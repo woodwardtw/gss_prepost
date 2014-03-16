@@ -1,41 +1,6 @@
 <?php
 
-function google_spreadsheet_to_array($key) {
-                // initialize URL
-                        $url = 'http://spreadsheets.google.com/feeds/cells/' . $key . '/1/public/values';
-
-                // initialize curl
-                        $curl = curl_init();
-
-                // set curl options
-                        curl_setopt($curl, CURLOPT_URL, $url);
-                        curl_setopt($curl, CURLOPT_HEADER, 0);
-                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-
-                // get the spreadsheet using curl
-                        $google_sheet = curl_exec($curl);
-
-                // close the curl connection
-                        curl_close($curl);
-
-                // import the xml file into a SimpleXML object
-                        $feed = new SimpleXMLElement($google_sheet);
-
-                // get every entry (cell) from the xml object
-                        // extract the column and row from the cell's title
-                        // e.g. A1 becomes [1][A]
-
-                        $array = array();
-                        foreach ($feed->entry as $entry) {
-                                $location = (string) $entry->title;
-                                preg_match('/(?P<column>[A-Z]+)(?P<row>[0-9]+)/', $location, $matches);
-                           $array[$matches['column']][$matches['row']] = (string) $entry->content;
-                        }
-
-                // return the array
-                return $array;
-        }
-        
+ // found via http://www.timmmmyboy.com/posts/ds106-goes-to-the-movies       
 function results_spreadsheet_to_array($key) {
 		// initialize URL
 				$url = 'http://spreadsheets.google.com/feeds/cells/' . $key . '/1/public/values';
@@ -72,7 +37,7 @@ function results_spreadsheet_to_array($key) {
 		return $array;
 }
         
-
+//REPLACE WITH THE KEY FROM YOUR Google SS
 $responses = results_spreadsheet_to_array('0Av9l84KvUJBWdFNVRGhhc1E1Umc0ZG92d1d4SE13N3c');
 $last = count($responses) - 1;
 $isFirst = true;	
@@ -85,6 +50,7 @@ $isFirst = true;
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://augmenting.me/trials/before_after/jquery.beforeafter.js"></script>
+<!-- before and after jquery plugin via http://www.catchmyfame.com/catchmyfame-jquery-plugins/jquery-beforeafter-plugin/ -->
 <script type="text/javascript">
 $(function(){
 	<?php
@@ -108,8 +74,13 @@ $(function(){
 	 <div class="container">
 	 	<div class="row clearfix">
 	 		<div class="col-md-12 column">
-	 			
+	 			<div class="jumbotron"><h2>Jackson Ward Then and Now</h2>
+		 			<p>A collaborative product from the fine people of THAT Camp New Souths, <a href="http://www.flickr.com/photos/vculibraries/sets/72157626912678597/">VCU Libraries</a>, and the wonderful <a href="http://www.catchmyfame.com/catchmyfame-jquery-plugins/jquery-beforeafter-plugin/">people</a> of the <a href="http://www.timmmmyboy.com/posts/ds106-goes-to-the-movies">Internet</a></p>
+		 			
+		 		</div>
+	
 	<?php
+	
 					foreach ($responses as $i => $row)
 	{
 		if ($isFirst) {
